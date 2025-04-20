@@ -13,4 +13,5 @@ app.include_router(reports_router)
 def home():
     return {
         "message" : "Working"
-    }
+}
+    
