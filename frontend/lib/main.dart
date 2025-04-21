@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/providers/auth_provider.dart';
+import 'package:frontend/providers/report_provider.dart'; 
 import 'package:frontend/router.dart';
 import 'package:provider/provider.dart';
 
@@ -18,9 +19,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => AuthProvider(),
-      child: FutureBuilder(
+    return MultiProvider( 
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()), 
+        ChangeNotifierProvider(create: (_) => ReportProvider()), 
+      ],
+      child: FutureBuilder<String?>(
         future: _checkToken(),
         builder: (context, snapshot) {
           final initialLocation =
