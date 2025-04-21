@@ -8,10 +8,10 @@ GoRouter createRouter(String initialLocation) {
   return GoRouter(
     initialLocation: initialLocation,
     routes: [
-      GoRoute(path: '/', name: "home", builder: (context, state) => const ProfileScreen()),
+      GoRoute(path: '/', name: "home", builder: (context, state) => const HomeScreen()),
       GoRoute(path: '/login', name: "login", builder: (context, state) => const LoginScreen()),
       GoRoute(path: '/signup', name: "signup", builder: (context, state) => const SignupScreen()),
-      // GoRoute(path: '/profile', name: "profile", builder: (context, state) => ProfileScreen()),
+      GoRoute(path: '/profile', name: "profile", builder: (context, state) => ProfileScreen()),
     ],
   );
 }
