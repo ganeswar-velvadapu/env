@@ -19,12 +19,32 @@ def add_a_report(title: str, description: str, location: str, status: str, user_
 def get_all_reports():
     with get_db_connection() as conn:
         cur = conn.cursor()
-        cur.execute("SELECT * FROM reports")
+        # Updated SQL query to join reports and users tables
+        cur.execute("""
+            SELECT reports.title, reports.description, reports.location, 
+                   reports.status, reports.user_id, users.email 
+            FROM reports 
+            JOIN users ON reports.user_id = users.id
+        """)
         all_reports = cur.fetchall()
+
+        # Format the results
+        reports = []
+        for report in all_reports:
+            reports.append({
+                'title': report[0],
+                'description': report[1],
+                'location': report[2],
+                'status': report[3],
+                'user_id': report[4],
+                'email': report[5]
+            })
+
         return {
             "status": "success",
-            "fetched_all": all_reports
+            "fetched_all": reports
         }
+
 def get_report_by_id(report_id: int):
     with get_db_connection() as conn:
         cur = conn.cursor()
