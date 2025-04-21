@@ -59,7 +59,6 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
     
     setState(() => _isLoading = true);
     
-    final name = _nameController.text.trim();
     final email = _emailController.text.trim();
     final password = _passwordController.text;
 
@@ -146,13 +145,13 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                     'Create Account',
                     style: theme.textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.onBackground,
+                      color: theme.colorScheme.onSurface,
                     ),
                   ),
                   Text(
                     'Sign up to get started',
                     style: theme.textTheme.bodyLarge?.copyWith(
-                      color: theme.colorScheme.onBackground.withOpacity(0.7),
+                      color: theme.colorScheme.onSurface.withOpacity(0.7),
                     ),
                   ),
                   const SizedBox(height: 32),
