@@ -66,7 +66,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
         await storage.write(key: 'token', value: user.token);
         
         if (mounted) {
-          // Show success message from server
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(response.data['message'] ?? 'Login successful'),
@@ -87,7 +86,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
       }
     } catch (e) {
       if (mounted) {
-        // Display server error message
         String errorMessage;
         if (e is Exception) {
           final message = e.toString();
@@ -101,6 +99,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
         }
         
         _showMessage(errorMessage, isError: true);
+        print(errorMessage);
       }
     } finally {
       if (mounted) {
@@ -151,13 +150,13 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                     'Welcome Back',
                     style: theme.textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.onBackground,
+                      color: theme.colorScheme.onSurface,
                     ),
                   ),
                   Text(
                     'Sign in to continue',
                     style: theme.textTheme.bodyLarge?.copyWith(
-                      color: theme.colorScheme.onBackground.withOpacity(0.7),
+                      color: theme.colorScheme.onSurface.withOpacity(0.7),
                     ),
                   ),
                   const SizedBox(height: 40),
@@ -251,22 +250,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                           ),
                         ),
                         const SizedBox(height: 16),
-                        // Forgot password
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                            onPressed: () {
-                              // Add forgot password navigation
-                              context.go('/forgot-password');
-                            },
-                            style: TextButton.styleFrom(
-                              foregroundColor: theme.colorScheme.primary,
-                              padding: const EdgeInsets.symmetric(horizontal: 8),
-                            ),
-                            child: const Text('Forgot Password?'),
-                          ),
-                        ),
-                        const SizedBox(height: 32),
+                        
                         // Login button
                         SizedBox(
                           width: double.infinity,
