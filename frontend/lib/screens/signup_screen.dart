@@ -70,7 +70,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
 
         await storage.write(key: 'token', value: user.token);
         if (mounted) {
-          // Show success message from server
+          
           _showMessage(response.data['message'] ?? 'Account created successfully!');
           
           context.read<AuthProvider>().setUser(user);
