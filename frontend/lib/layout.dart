@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/add_a_report.dart';
 import 'package:frontend/screens/home_screen.dart';
+import 'package:frontend/screens/map_ngos.dart';
 import 'package:frontend/screens/profile_screen.dart';
 
 class Layout extends StatefulWidget {
@@ -17,6 +18,7 @@ class _LayoutState extends State<Layout> {
     HomeScreen(),
     AddReportScreen(),
     ProfileScreen(),
+    MapNGOs(),
   ];
 
   void _onItemTapped(int index) {
@@ -32,11 +34,24 @@ class _LayoutState extends State<Layout> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
     return Scaffold(
       backgroundColor: Colors.white,
-
       appBar: AppBar(
-        title: const Text("Random"),
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        elevation: 0,
+        title: Text(
+          "Random",
+          style: TextStyle(
+            color: theme.colorScheme.onSurface,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        iconTheme: IconThemeData(
+          color: theme.colorScheme.onSurface,
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.account_circle),
@@ -45,36 +60,97 @@ class _LayoutState extends State<Layout> {
         ],
       ),
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Text('Menu', style: TextStyle(color: Colors.white, fontSize: 24)),
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              color: theme.colorScheme.onSurface,
+              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 16),
+              child: const Text(
+                'Menu',
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
             ),
             ListTile(
-              title: const Text('Home'),
+              title: Text(
+                'Home',
+                style: TextStyle(color: theme.colorScheme.onSurface),
+              ),
               onTap: () => _onDrawerItemTapped(0),
             ),
             ListTile(
-              title: const Text('Add Report'),
+              title: Text(
+                'Add Report',
+                style: TextStyle(color: theme.colorScheme.onSurface),
+              ),
               onTap: () => _onDrawerItemTapped(1),
             ),
             ListTile(
-              title: const Text('Profile'),
+              title: Text(
+                'Profile',
+                style: TextStyle(color: theme.colorScheme.onSurface),
+              ),
               onTap: () => _onDrawerItemTapped(2),
+            ),
+            ListTile(
+              title: Text(
+                'Map NGOs',
+                style: TextStyle(color: theme.colorScheme.onSurface),
+              ),
+              onTap: () => _onDrawerItemTapped(3),
             ),
           ],
         ),
       ),
       body: _screens[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: _onItemTapped,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Add Report'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            top: BorderSide(color: Colors.black12, width: 0.5),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildNavItem(0, Icons.home, 'Home'),
+              _buildNavItem(1, Icons.add, 'Add Report'),
+              _buildNavItem(2, Icons.person, 'Profile'),
+              _buildNavItem(3, Icons.location_on, 'Map NGOs'),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavItem(int index, IconData icon, String label) {
+    final theme = Theme.of(context);
+    final isSelected = _currentIndex == index;
+    
+    return GestureDetector(
+      onTap: () => _onItemTapped(index),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            color: isSelected 
+                ? theme.colorScheme.onSurface 
+                : Colors.grey,
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              color: isSelected 
+                  ? theme.colorScheme.onSurface 
+                  : Colors.grey,
+            ),
+          ),
         ],
       ),
     );
