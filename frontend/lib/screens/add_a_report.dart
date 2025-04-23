@@ -14,10 +14,14 @@ class AddReportScreen extends StatefulWidget {
 
 class _AddReportScreenState extends State<AddReportScreen> {
   final _formKey = GlobalKey<FormState>();
-  String title = '', description = '', location = '', status = '';
+  String title = '', description = '', location = '';
+  String status = 'pending'; // Default status
   bool _isGettingLocation = true;
+  bool _isSubmitting = false;
 
   final storage = FlutterSecureStorage();
+  
+  final List<String> statusOptions = ['pending', 'responded'];
 
   @override
   void initState() {
@@ -67,71 +71,271 @@ class _AddReportScreenState extends State<AddReportScreen> {
   @override
   Widget build(BuildContext context) {
     final reportProvider = context.read<ReportProvider>();
+    final theme = Theme.of(context);
+    final textColor = theme.colorScheme.onSurface;
 
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            TextFormField(
-              decoration: const InputDecoration(labelText: 'Title'),
-              onChanged: (val) => title = val,
-              validator: (val) => val == null || val.isEmpty ? 'Title is required' : null,
-            ),
-            TextFormField(
-              decoration: const InputDecoration(labelText: 'Description'),
-              onChanged: (val) => description = val,
-              validator: (val) => val == null || val.isEmpty ? 'Description is required' : null,
-            ),
-            TextFormField(
-              decoration: const InputDecoration(labelText: 'Status'),
-              onChanged: (val) => status = val,
-              validator: (val) => val == null || val.isEmpty ? 'Status is required' : null,
-            ),
-            const SizedBox(height: 16),
-            if (_isGettingLocation)
-              const CircularProgressIndicator()
-            else
-              TextFormField(
-                initialValue: location,
-                readOnly: true,
-                decoration: const InputDecoration(labelText: 'Location'),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                'Add New Report',
+                style: TextStyle(
+                  color: textColor,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () async {
-                if (_formKey.currentState!.validate() && !_isGettingLocation) {
-                  final token = await storage.read(key: 'token');
-                  if (token == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Token missing. Please log in again.')),
-                    );
-                    return;
-                  }
+              const SizedBox(height: 24),
+              _buildTextField(
+                label: 'Title',
+                onChanged: (val) => title = val,
+                validator: (val) => val == null || val.isEmpty ? 'Title is required' : null,
+                textColor: textColor,
+              ),
+              const SizedBox(height: 16),
+              _buildTextField(
+                label: 'Description',
+                onChanged: (val) => description = val,
+                validator: (val) => val == null || val.isEmpty ? 'Description is required' : null,
+                textColor: textColor,
+                maxLines: 3,
+              ),
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black12),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Status',
+                      style: TextStyle(
+                        color: textColor,
+                        fontSize: 12,
+                      ),
+                    ),
+                    DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        value: status,
+                        isExpanded: true,
+                        icon: Icon(Icons.arrow_drop_down, color: textColor),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            status = newValue!;
+                          });
+                        },
+                        items: statusOptions.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: TextStyle(color: textColor),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black12),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Location',
+                      style: TextStyle(
+                        color: textColor,
+                        fontSize: 12,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    _isGettingLocation
+                        ? Center(
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: textColor,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  'Getting location...',
+                                  style: TextStyle(color: textColor),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Text(
+                            location,
+                            style: TextStyle(color: textColor),
+                          ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 32),
+              GestureDetector(
+                onTap: _isSubmitting || _isGettingLocation
+                    ? null
+                    : () async {
+                        if (_formKey.currentState!.validate()) {
+                          setState(() {
+                            _isSubmitting = true;
+                          });
 
-                  try {
-                    await reportProvider.addReport({
-                      'title': title,
-                      'description': description,
-                      'location': location,
-                      'status': status,
-                    }, token);
+                          final token = await storage.read(key: 'token');
+                          if (token == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'Token missing. Please log in again.',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                            setState(() {
+                              _isSubmitting = false;
+                            });
+                            return;
+                          }
 
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Report added successfully')),
-                    );
-                  } catch (e) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Error: ${e.toString()}')),
-                    );
-                  }
-                }
-              },
-              child: const Text("Submit"),
-            ),
-          ],
+                          try {
+                            await reportProvider.addReport({
+                              'title': title,
+                              'description': description,
+                              'location': location,
+                              'status': status,
+                            }, token);
+
+                            // Reset form
+                            _formKey.currentState?.reset();
+                            setState(() {
+                              title = '';
+                              description = '';
+                              status = 'Pending';
+                            });
+
+                            // Show success message
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Row(
+                                  children: [
+                                    Icon(Icons.check_circle, color: Colors.white),
+                                    SizedBox(width: 10),
+                                    Text(
+                                      'Report added successfully!',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                                backgroundColor: Colors.green,
+                                duration: Duration(seconds: 3),
+                              ),
+                            );
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'Error: ${e.toString()}',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          } finally {
+                            setState(() {
+                              _isSubmitting = false;
+                            });
+                          }
+                        }
+                      },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  decoration: BoxDecoration(
+                    color: _isSubmitting || _isGettingLocation ? Colors.grey : textColor,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Center(
+                    child: _isSubmitting
+                        ? SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                        : Text(
+                            'Submit Report',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required String label,
+    required Function(String) onChanged,
+    required String? Function(String?) validator,
+    required Color textColor,
+    int maxLines = 1,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black12),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              color: textColor,
+              fontSize: 12,
+            ),
+          ),
+          TextFormField(
+            style: TextStyle(color: textColor),
+            onChanged: onChanged,
+            validator: validator,
+            maxLines: maxLines,
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.zero,
+            ),
+          ),
+        ],
       ),
     );
   }
