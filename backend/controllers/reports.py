@@ -21,7 +21,7 @@ def get_all_reports():
         cur = conn.cursor()
         # Updated SQL query to join reports and users tables
         cur.execute("""
-            SELECT reports.title, reports.description, reports.location, 
+            SELECT reports.id, reports.title, reports.description, reports.location, 
                    reports.status, reports.user_id, users.email 
             FROM reports 
             JOIN users ON reports.user_id = users.id
@@ -32,12 +32,13 @@ def get_all_reports():
         reports = []
         for report in all_reports:
             reports.append({
-                'title': report[0],
-                'description': report[1],
-                'location': report[2],
-                'status': report[3],
-                'user_id': report[4],
-                'email': report[5]
+                'id' : report[0],
+                'title': report[1],
+                'description': report[2],
+                'location': report[3],
+                'status': report[4],
+                'user_id': report[5],
+                'email': report[6]
             })
 
         return {
@@ -101,3 +102,22 @@ def delete_report(report_id: int, current_user_id: str):
             "status": "success",
             "message": "Report deleted successfully"
         }
+
+def user_reports(current_user_id: str):
+    with get_db_connection() as conn:
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT reports.id, reports.title, reports.description, reports.location, 
+                   reports.status, reports.user_id, users.email 
+            FROM reports
+            JOIN users ON reports.user_id = users.id
+            WHERE reports.user_id = %s
+        """, (current_user_id,))
+        rows = cur.fetchall()
+
+        columns = [desc[0] for desc in cur.description]
+        reports = [dict(zip(columns, row)) for row in rows]
+
+    return {
+        "user_reports": reports
+    }
