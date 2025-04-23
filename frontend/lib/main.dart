@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         builder: (context, snapshot) {
           final initialLocation =
               snapshot.connectionState == ConnectionState.done && snapshot.data != null
-                  ? '/'
+                  ? '/'  
                   : '/login';
 
           return MaterialApp.router(
