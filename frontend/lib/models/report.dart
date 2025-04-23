@@ -1,4 +1,5 @@
 class Report {
+  final int id;
   final String title;
   final String description;
   final String location;
@@ -7,6 +8,7 @@ class Report {
   final String email;
 
   Report({
+    required this.id,
     required this.title,
     required this.description,
     required this.location,
@@ -15,9 +17,9 @@ class Report {
     required this.email,
   });
 
-  
   factory Report.fromMap(Map<String, dynamic> map) {
     return Report(
+      id: map['id'],
       title: map['title'] ?? '',
       description: map['description'] ?? '',
       location: map['location'] ?? '',
