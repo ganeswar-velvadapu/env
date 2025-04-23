@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
 class AuthApi {
-  static const String baseUrl = 'http://192.168.0.102:8000/api/auth';
+  static const String baseUrl = 'http://172.24.82.107:8000/api/auth';
   static final Dio dio = Dio(BaseOptions(baseUrl: baseUrl));
 
   static Future<Response> login(String email, String password) async {

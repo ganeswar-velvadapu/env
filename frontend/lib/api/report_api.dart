@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
 class ReportApi {
-  static const String BaseUrl = "http://192.168.0.102:8000/api";
+  static const String BaseUrl = "http://172.24.82.107:8000/api";
   static final Dio dio = Dio(BaseOptions(baseUrl: BaseUrl));
 
   static Future<Response> getAllReports() async {

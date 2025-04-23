@@ -127,7 +127,7 @@ class _MyReportsScreenState extends State<MyReportsScreen> {
     final locationController = TextEditingController(text: report.location);
     
     String status = report.status;
-    final statusOptions = ['Pending', 'Responded'];
+    final statusOptions = ['pending', 'responded'];
 
     await showDialog(
       context: context,
@@ -397,12 +397,12 @@ class _MyReportsScreenState extends State<MyReportsScreen> {
                                           vertical: 2,
                                         ),
                                         decoration: BoxDecoration(
-                                          color: report.status == 'Pending'
+                                          color: report.status == 'pending'
                                               ? Colors.orange.withOpacity(0.1)
                                               : Colors.green.withOpacity(0.1),
                                           borderRadius: BorderRadius.circular(12),
                                           border: Border.all(
-                                            color: report.status == 'Pending'
+                                            color: report.status == 'pending'
                                                 ? Colors.orange
                                                 : Colors.green,
                                           ),
@@ -411,7 +411,7 @@ class _MyReportsScreenState extends State<MyReportsScreen> {
                                           report.status,
                                           style: TextStyle(
                                             fontSize: 10,
-                                            color: report.status == 'Pending'
+                                            color: report.status == 'pending'
                                                 ? Colors.orange
                                                 : Colors.green,
                                           ),
