@@ -27,12 +27,11 @@ class ReportProvider with ChangeNotifier {
     }
   }
 
-  Future<void> addReport(Map<String, dynamic> reportData) async {
+  Future<void> addReport(Map<String, dynamic> reportData,String token) async {
     try {
-      final response = await ReportApi.postReport(reportData);
+      final response = await ReportApi.addReport(reportData,token);
       print("Report added: ${response.data}");
 
-      // Optionally refetch reports after adding one
       await fetchReports();
     } catch (e) {
       print("Error adding report: $e");
