@@ -18,14 +18,26 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.watch<AuthProvider>().user;
+    final theme = Theme.of(context);
+    final textColor = theme.colorScheme.onSurface;
 
     if (user == null) {
       return Center(
-        child: ElevatedButton(
-          onPressed: () {
+        child: GestureDetector(
+          onTap: () {
             context.push('/login');
           },
-          child: const Text("Login"),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            decoration: BoxDecoration(
+              border: Border.all(color: textColor),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Text(
+              "Login",
+              style: TextStyle(color: textColor),
+            ),
+          ),
         ),
       );
     }
@@ -36,35 +48,83 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const CircleAvatar(
-              radius: 50,
-              child: Icon(Icons.person, size: 50),
+            Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: textColor),
+              ),
+              child: Icon(
+                Icons.person,
+                size: 50,
+                color: textColor,
+              ),
             ),
             const SizedBox(height: 20),
             Text(
               user.email,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: textColor,
+              ),
             ),
             const SizedBox(height: 10),
             Text(
               'User ID: ${user.id}',
-              style: const TextStyle(fontSize: 16, color: Colors.grey),
+              style: TextStyle(
+                fontSize: 16,
+                color: textColor.withOpacity(0.7),
+              ),
             ),
             const SizedBox(height: 30),
-            ElevatedButton.icon(
-              onPressed: () {
+            GestureDetector(
+              onTap: () {
                 context.push('/my-reports');
               },
-              icon: const Icon(Icons.report),
-              label: const Text("My Reports"),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                decoration: BoxDecoration(
+                  border: Border.all(color: textColor),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.report, color: textColor),
+                    const SizedBox(width: 8),
+                    Text(
+                      "My Reports",
+                      style: TextStyle(color: textColor),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            const SizedBox(height: 10),
-            ElevatedButton.icon(
-              onPressed: () => _logout(context),
-              icon: const Icon(Icons.logout),
-              label: const Text("Logout"),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
+            const SizedBox(height: 16),
+            GestureDetector(
+              onTap: () => _logout(context),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.red),
+                  color: Colors.red.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.logout, color: Colors.red),
+                    const SizedBox(width: 8),
+                    const Text(
+                      "Logout",
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
