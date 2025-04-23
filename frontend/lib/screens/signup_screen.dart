@@ -63,7 +63,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
     final password = _passwordController.text;
 
     try {
-      final response = await AuthApi.signup( email, password);
+      final response = await AuthApi.signup(email, password);
       if (response.data['status'] == 'success') {
         final data = response.data['data'];
         final user = User.fromJson(data);
@@ -107,7 +107,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: isError ? Colors.red.shade700 : Colors.green.shade700,
+        backgroundColor: isError ? Colors.black : Colors.black87,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
@@ -138,20 +138,20 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                   Icon(
                     Icons.person_add_outlined,
                     size: 80,
-                    color: theme.colorScheme.primary,
+                    color: Colors.black,
                   ),
                   const SizedBox(height: 16),
                   Text(
                     'Create Account',
                     style: theme.textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.onSurface,
+                      color: Colors.black,
                     ),
                   ),
                   Text(
                     'Sign up to get started',
                     style: theme.textTheme.bodyLarge?.copyWith(
-                      color: theme.colorScheme.onSurface.withOpacity(0.7),
+                      color: Colors.black54,
                     ),
                   ),
                   const SizedBox(height: 32),
@@ -180,7 +180,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                               hintText: 'your.email@example.com',
                               prefixIcon: Icon(
                                 Icons.email_outlined,
-                                color: theme.colorScheme.primary,
+                                color: Colors.black,
                               ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -188,13 +188,13 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                                 borderSide: BorderSide(
-                                  color: theme.colorScheme.outline,
+                                  color: Colors.black45,
                                 ),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                                 borderSide: BorderSide(
-                                  color: theme.colorScheme.primary,
+                                  color: Colors.black,
                                   width: 2,
                                 ),
                               ),
@@ -220,12 +220,12 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                               hintText: '••••••••',
                               prefixIcon: Icon(
                                 Icons.lock_outline_rounded,
-                                color: theme.colorScheme.primary,
+                                color: Colors.black,
                               ),
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   _obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-                                  color: theme.colorScheme.onSurfaceVariant,
+                                  color: Colors.black54,
                                 ),
                                 onPressed: () {
                                   setState(() {
@@ -239,13 +239,13 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                                 borderSide: BorderSide(
-                                  color: theme.colorScheme.outline,
+                                  color: Colors.black45,
                                 ),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                                 borderSide: BorderSide(
-                                  color: theme.colorScheme.primary,
+                                  color: Colors.black,
                                   width: 2,
                                 ),
                               ),
@@ -270,12 +270,12 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                               hintText: '••••••••',
                               prefixIcon: Icon(
                                 Icons.lock_outline_rounded,
-                                color: theme.colorScheme.primary,
+                                color: Colors.black,
                               ),
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   _obscureConfirmPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-                                  color: theme.colorScheme.onSurfaceVariant,
+                                  color: Colors.black54,
                                 ),
                                 onPressed: () {
                                   setState(() {
@@ -289,13 +289,13 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                                 borderSide: BorderSide(
-                                  color: theme.colorScheme.outline,
+                                  color: Colors.black45,
                                 ),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                                 borderSide: BorderSide(
-                                  color: theme.colorScheme.primary,
+                                  color: Colors.black,
                                   width: 2,
                                 ),
                               ),
@@ -309,8 +309,8 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                             child: ElevatedButton(
                               onPressed: _isLoading ? null : _signup,
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: theme.colorScheme.primary,
-                                foregroundColor: theme.colorScheme.onPrimary,
+                                backgroundColor: Colors.black,
+                                foregroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(16),
                                 ),
@@ -321,7 +321,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                                       width: 24,
                                       height: 24,
                                       child: CircularProgressIndicator(
-                                        color: theme.colorScheme.onPrimary,
+                                        color: Colors.white,
                                         strokeWidth: 2.5,
                                       ),
                                     )
@@ -353,14 +353,14 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                             context.go('/login');
                           },
                           style: TextButton.styleFrom(
-                            foregroundColor: theme.colorScheme.primary,
+                            foregroundColor: Colors.black,
                             padding: const EdgeInsets.symmetric(horizontal: 8),
                           ),
                           child: Text(
                             'Sign In',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: theme.colorScheme.primary,
+                              color: Colors.black,
                             ),
                           ),
                         ),
