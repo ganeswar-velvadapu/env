@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/providers/report_provider.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,29 +10,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
-
-  final List<String> _routes = [
-    '/',            // Reports screen
-    '/report/add',  // Add Report (to be created)
-    '/profile',     // Profile screen
-  ];
-
   @override
   void initState() {
     super.initState();
-    Provider.of<ReportProvider>(context, listen: false).fetchReports();
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ReportProvider>().fetchReports();
     });
-    context.go(_routes[index]); // Navigate using GoRouter
   }
 
-  Widget _buildReportList(BuildContext context) {
-    final reportProvider = Provider.of<ReportProvider>(context);
+  @override
+  Widget build(BuildContext context) {
+    final reportProvider = context.watch<ReportProvider>();
+
     return reportProvider.reports.isEmpty
         ? const Center(child: Text("No reports found"))
         : ListView.builder(
@@ -62,31 +50,5 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
           );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Reports")),
-      body: _buildReportList(context),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: 'Reports',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'Add Report',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-      ),
-    );
   }
 }
