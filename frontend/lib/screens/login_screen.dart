@@ -98,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
           errorMessage = e.toString();
         }
         
-        _showMessage(errorMessage, isError: true);
+        _showMessage("Login Failed", isError: true);
         print(errorMessage);
       }
     } finally {
