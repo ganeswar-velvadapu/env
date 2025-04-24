@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/providers/report_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:go_router/go_router.dart';
 
 class MyReportsScreen extends StatefulWidget {
-  const MyReportsScreen({Key? key}) : super(key: key);
+  const MyReportsScreen({super.key});
 
   @override
   State<MyReportsScreen> createState() => _MyReportsScreenState();
@@ -127,7 +126,7 @@ class _MyReportsScreenState extends State<MyReportsScreen> {
     final locationController = TextEditingController(text: report.location);
     
     String status = report.status;
-    final statusOptions = ['pending', 'responded'];
+    final statusOptions = ['PENDING', 'RESPONDED'];
 
     await showDialog(
       context: context,
@@ -397,12 +396,12 @@ class _MyReportsScreenState extends State<MyReportsScreen> {
                                           vertical: 2,
                                         ),
                                         decoration: BoxDecoration(
-                                          color: report.status == 'pending'
+                                          color: report.status == 'PENDING'
                                               ? Colors.orange.withOpacity(0.1)
                                               : Colors.green.withOpacity(0.1),
                                           borderRadius: BorderRadius.circular(12),
                                           border: Border.all(
-                                            color: report.status == 'pending'
+                                            color: report.status == 'PENDING'
                                                 ? Colors.orange
                                                 : Colors.green,
                                           ),
@@ -411,7 +410,7 @@ class _MyReportsScreenState extends State<MyReportsScreen> {
                                           report.status,
                                           style: TextStyle(
                                             fontSize: 10,
-                                            color: report.status == 'pending'
+                                            color: report.status == 'PENDING'
                                                 ? Colors.orange
                                                 : Colors.green,
                                           ),

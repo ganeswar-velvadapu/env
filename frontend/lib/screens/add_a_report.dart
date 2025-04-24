@@ -15,13 +15,13 @@
   class _AddReportScreenState extends State<AddReportScreen> {
     final _formKey = GlobalKey<FormState>();
     String title = '', description = '', location = '';
-    String status = 'pending'; // Default status
+    String status = 'PENDING'; 
     bool _isGettingLocation = true;
     bool _isSubmitting = false;
 
     final storage = FlutterSecureStorage();
     
-    final List<String> statusOptions = ['pending', 'responded'];
+    final List<String> statusOptions = ['PENDING', 'RESPONDED'];
 
     @override
     void initState() {
@@ -232,7 +232,7 @@
                               setState(() {
                                 title = '';
                                 description = '';
-                                status = 'pending';
+                                status = 'PENDING';
                               });
 
                               // Show success message
