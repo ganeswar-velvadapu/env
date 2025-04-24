@@ -1,8 +1,13 @@
+from dotenv import load_dotenv
 import psycopg2
+import os
 
 
-DATABASE_URL = "postgresql://postgres:postgres@localhost/env"
+load_dotenv()
+
+
+db_url = os.getenv("DATABASE_URL")
 
 def get_db_connection():
-    conn = psycopg2.connect(DATABASE_URL)
+    conn = psycopg2.connect(db_url)
     return conn
