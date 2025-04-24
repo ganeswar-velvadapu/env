@@ -3,6 +3,7 @@ from routes.auth import auth_router
 from routes.reports import reports_router
 from routes.events import events_router
 
+
 app = FastAPI()
 
 
