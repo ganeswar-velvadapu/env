@@ -1,6 +1,5 @@
 from fastapi import HTTPException, status
 from db import get_db_connection
-from utils.jwt import decode_jwt
 
 def add_a_report(title: str, description: str, location: str, status: str, user_id: str):
     with get_db_connection() as conn:
@@ -16,6 +15,8 @@ def add_a_report(title: str, description: str, location: str, status: str, user_
             "message": "Report added successfully",
             "report_id": report_id
         }
+        
+        
 def get_all_reports():
     with get_db_connection() as conn:
         cur = conn.cursor()
@@ -28,7 +29,6 @@ def get_all_reports():
         """)
         all_reports = cur.fetchall()
 
-        # Format the results
         reports = []
         for report in all_reports:
             reports.append({
