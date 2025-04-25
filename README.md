@@ -1,4 +1,4 @@
 ToDo
-- add some pages in frontend
+- add events page in frontend
 - integrate s3 
-- add help_requests routes in backend 
+- ngo request and resloved mail to user in backend and frontend
