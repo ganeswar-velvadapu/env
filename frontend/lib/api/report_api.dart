@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ReportApi {
-  static const String BaseUrl = "http://172.24.82.107:8000/api";
-  static final Dio dio = Dio(BaseOptions(baseUrl: BaseUrl));
+  static String baseUrl = '${dotenv.env["BACKEND_BASE_URL"]}/api';
+  static final Dio dio = Dio(BaseOptions(baseUrl: baseUrl));
 
   static Future<Response> getAllReports() async {
     return await dio.get("/report");

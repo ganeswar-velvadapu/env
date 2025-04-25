@@ -1,7 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AuthApi {
-  static const String baseUrl = 'http://172.24.82.107:8000/api/auth';
+
+
+  static String baseUrl = '${dotenv.env["BACKEND_BASE_URL"]}/api/auth';
   static final Dio dio = Dio(BaseOptions(baseUrl: baseUrl));
 
   static Future<Response> login(String email, String password) async {

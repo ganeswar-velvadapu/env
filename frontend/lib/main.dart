@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/providers/auth_provider.dart';
-import 'package:frontend/providers/report_provider.dart'; 
+import 'package:frontend/providers/report_provider.dart';
 import 'package:frontend/router.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 
@@ -19,18 +22,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider( 
+    return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider()), 
-        ChangeNotifierProvider(create: (_) => ReportProvider()), 
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => ReportProvider()),
       ],
       child: FutureBuilder<String?>(
         future: _checkToken(),
         builder: (context, snapshot) {
-          final initialLocation =
-              snapshot.connectionState == ConnectionState.done && snapshot.data != null
-                  ? '/'  
-                  : '/login';
+          if (snapshot.connectionState != ConnectionState.done) {
+            // Show a loading screen while checking token
+            return const MaterialApp(
+              home: Scaffold(body: Center(child: CircularProgressIndicator())),
+            );
+          }
+
+          final initialLocation = snapshot.data != null ? '/' : '/login';
 
           return MaterialApp.router(
             debugShowCheckedModeBanner: false,
