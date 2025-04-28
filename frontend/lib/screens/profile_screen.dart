@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:frontend/models/user.dart';
 import 'package:frontend/providers/auth_provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +21,7 @@ class ProfileScreen extends StatelessWidget {
     final user = context.watch<AuthProvider>().user;
     final theme = Theme.of(context);
     final textColor = theme.colorScheme.onSurface;
-
+    
     if (user == null) {
       return Center(
         child: GestureDetector(
@@ -71,13 +72,23 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            Text(
-              'User ID: ${user.id}',
-              style: TextStyle(
-                fontSize: 16,
-                color: textColor.withOpacity(0.7),
-              ),
-            ),
+            TextButton(
+  onPressed: () {
+    if (user.userType == UserType.normal) {
+      context.push('/get-ngo-status'); // Navigate to some page
+    } else {
+      context.push('/ngo'); // Navigate to NGO-related page
+    }
+  },
+  child: Text(
+    user.userType == UserType.ngo ? 'Get NGO Status' : 'NGO',
+    style: TextStyle(
+      fontSize: 16,
+      color: textColor.withOpacity(0.7),
+    ),
+  ),
+),
+
             const SizedBox(height: 30),
             GestureDetector(
               onTap: () {
