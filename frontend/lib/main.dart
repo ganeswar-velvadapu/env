@@ -31,14 +31,12 @@ class MyApp extends StatelessWidget {
         future: _checkToken(),
         builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
-            // Show a loading screen while checking token
             return const MaterialApp(
               home: Scaffold(body: Center(child: CircularProgressIndicator())),
             );
           }
 
           final initialLocation = snapshot.data != null ? '/' : '/login';
-
           return MaterialApp.router(
             debugShowCheckedModeBanner: false,
             routerConfig: createRouter(initialLocation),
