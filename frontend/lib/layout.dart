@@ -39,7 +39,6 @@ class _LayoutState extends State<Layout> {
     } else {
       setState(() {
         _hasValidToken = false;
-        // When no token, exclude AddReportScreen from the list
         _screens = const [
           HomeScreen(),
           ProfileScreen(),
@@ -71,7 +70,7 @@ class _LayoutState extends State<Layout> {
         centerTitle: true,
         elevation: 0,
         title: Text(
-          "Random",
+          "BIOVERSE",
           style: TextStyle(
             color: theme.colorScheme.onSurface,
             fontWeight: FontWeight.w500,
@@ -109,7 +108,7 @@ class _LayoutState extends State<Layout> {
             if (_hasValidToken) 
               ListTile(
                 title: Text(
-                  'Add Report',
+                  'Add an Event',
                   style: TextStyle(color: theme.colorScheme.onSurface),
                 ),
                 onTap: () => _onDrawerItemTapped(1),
