@@ -80,7 +80,7 @@ class ReportProvider with ChangeNotifier {
       return _reports.firstWhere((report) => report.id == reportId);
     } catch (e) {
       print("Report with ID $reportId not found.");
-      rethrow; // Optionally, you can throw an error if the report is not found
+      rethrow; 
     }
   }
 }
