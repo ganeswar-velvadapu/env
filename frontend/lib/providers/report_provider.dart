@@ -70,7 +70,6 @@ class ReportProvider with ChangeNotifier {
     try {
       await ReportApi.updateReport(id, updatedData, token);
       await fetchUserReports(token);
-      notifyListeners();
     } catch (e) {
       print("Error updating report: $e");
     }
