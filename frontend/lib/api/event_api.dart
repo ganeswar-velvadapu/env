@@ -10,7 +10,7 @@ class EventApi {
     return await dio.get('/events');
   }
 
-  // Add a new event
+
   static Future<Response> addEvent(
     Map<String, dynamic> eventData,
     String token,
