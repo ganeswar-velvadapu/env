@@ -12,7 +12,7 @@ class EventsProvider with ChangeNotifier {
       final response = await EventApi.getAllEvents();
       print(response);
       if (response.data is Map<String, dynamic>) {
-        final fetchedEvents = response.data['fetched_all'];
+        final fetchedEvents = response.data['all_events'];
 
         if (fetchedEvents is List) {
           _events =
@@ -55,10 +55,31 @@ class EventsProvider with ChangeNotifier {
   Future<void> deleteEvent(int id, String token) async {
     try {
       final response = await EventApi.deleteEvent(token, id);
-      print(response);
+
       await fetchEvents();
     } catch (e) {
       print("Error deleting event: $e");
+    }
+  }
+
+  Future<void> fetchNgoEvents(String token) async {
+    try {
+      final response = await EventApi.getNgoEvents(token);
+      print(response);
+      if (response.data is Map<String, dynamic>) {
+        final fetchedEvents = response.data['ngo_events'];
+
+        if (fetchedEvents is List) {
+          _events =
+              fetchedEvents.map((eventData) {
+                return Event.fromJson(eventData);
+              }).toList();
+        }
+      }
+
+      notifyListeners();
+    } catch (e) {
+      print("Error fetching NGO events: $e");
     }
   }
 }
