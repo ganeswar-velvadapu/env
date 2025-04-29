@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/providers/auth_provider.dart';
+import 'package:frontend/providers/events_provider.dart';
 import 'package:frontend/providers/report_provider.dart';
 import 'package:frontend/router.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => ReportProvider()),
+        ChangeNotifierProvider(create: (_) => EventsProvider())
       ],
       child: FutureBuilder<String?>(
         future: _checkToken(),
