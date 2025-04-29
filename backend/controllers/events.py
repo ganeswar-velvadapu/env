@@ -94,5 +94,23 @@ def delete_a_event(event_id:int,ngo_id:int):
             "status": "success",
             "message": "Event deleted successfully"
         }
-
         
+        
+def ngo_events(current_user_id: str):
+    with get_db_connection() as conn:
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT events.id, events.title, events.description, events.location,
+                   events.ngo_id, users.email
+            FROM events
+            JOIN users ON events.ngo_id = users.id
+            WHERE events.ngo_id = %s
+        """, (current_user_id,))
+        rows = cur.fetchall()
+
+        columns = [desc[0] for desc in cur.description]
+        events = [dict(zip(columns, row)) for row in rows]
+
+    return {
+        "ngo_events": events
+    }
