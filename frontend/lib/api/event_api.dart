@@ -10,7 +10,6 @@ class EventApi {
     return await dio.get('/events');
   }
 
-
   static Future<Response> addEvent(
     Map<String, dynamic> eventData,
     String token,
@@ -23,7 +22,7 @@ class EventApi {
       );
       return response;
     } catch (e) {
-      print('Error adding event: $e'); 
+      print('Error adding event: $e');
       rethrow;
     }
   }
@@ -55,6 +54,19 @@ class EventApi {
       return response;
     } catch (e) {
       print('Error deleting event: $e');
+      rethrow;
+    }
+  }
+
+  static Future<Response> getNgoEvents(String token) async {
+    try {
+      final response = dio.get(
+        "/ngo/events",
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
+      return response;
+    } catch (e) {
+      print('Error fetching your events: $e');
       rethrow;
     }
   }
