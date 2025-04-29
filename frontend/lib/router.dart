@@ -1,4 +1,5 @@
 import 'package:frontend/layout.dart';
+import 'package:frontend/screens/add_a_event.dart';
 import 'package:frontend/screens/add_a_report.dart';
 import 'package:frontend/screens/home_screen.dart';
 import 'package:frontend/screens/login_screen.dart';
@@ -44,11 +45,15 @@ GoRouter createRouter(String initialLocation) {
       ),
       GoRoute(
         path: '/my-reports',
-        builder: (context, state) => const MyReportsScreen(),
-      )
-      ,GoRoute(
+        builder: (context, state) => MyReportsScreen(),
+      ),
+      GoRoute(
         path: '/mapngo',
         builder: (context, state) => const MapNGOs(),
+      ),
+      GoRoute(
+        path: '/add-event',
+        builder: (context, state) => AddEventScreen(),
       ),
     ],
   );
