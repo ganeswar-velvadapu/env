@@ -41,9 +41,9 @@ class _MyEventsState extends State<MyEvents> {
   }
 
   void _showEditDialog(Event event) {
-    final _titleController = TextEditingController(text: event.title);
-    final _descController = TextEditingController(text: event.description);
-    final _locationController = TextEditingController(text: event.location);
+    final titleController = TextEditingController(text: event.title);
+    final descController = TextEditingController(text: event.description);
+    final locationController = TextEditingController(text: event.location);
 
     showDialog(
       context: context,
@@ -54,15 +54,15 @@ class _MyEventsState extends State<MyEvents> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextField(
-                  controller: _titleController,
+                  controller: titleController,
                   decoration: const InputDecoration(labelText: 'Title'),
                 ),
                 TextField(
-                  controller: _descController,
+                  controller: descController,
                   decoration: const InputDecoration(labelText: 'Description'),
                 ),
                 TextField(
-                  controller: _locationController,
+                  controller: locationController,
                   decoration: const InputDecoration(labelText: 'Location'),
                 ),
               ],
@@ -85,9 +85,9 @@ class _MyEventsState extends State<MyEvents> {
                   }
 
                   final updatedEvent = {
-                    'title': _titleController.text,
-                    'description': _descController.text,
-                    'location': _locationController.text,
+                    'title': titleController.text,
+                    'description': descController.text,
+                    'location': locationController.text,
                   };
 
                   await context.read<EventsProvider>().editEvent(
