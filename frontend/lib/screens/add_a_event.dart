@@ -170,7 +170,6 @@ class _AddEventScreenState extends State<AddEventScreen> {
         ),
       );
 
-      // Reset form
       _formKey.currentState?.reset();
       setState(() {
         title = '';
